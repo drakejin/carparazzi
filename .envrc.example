@@ -1,0 +1,17 @@
+dotenv # set .env files to environment
+
+export ENV="prod" # 'local' 과 'prod' 모드 밖에 없습니다.
+
+export AWS_REGION=eu-west-1 # lam use default region is us-east-2
+export AWS_DEFAULT_REGION=eu-west-1 # lam use default region is us-east-2
+export TZ="Etc/UTC"
+
+# # get aws account id using aws cli
+# AWS_ACCOUNT_ID="$(aws sts get-caller-identity --query "Account" --output text)"
+
+# # login AWS ECR repository
+# aws ecr get-login-password --region ${AWS_REGION} \
+#   | docker login --username AWS --password-stdin ${AWS_ACCOUNT_ID}.dkr.ecr.${AWS_REGION}.amazonaws.com
+
+# If you set this variable, you must see the #Tip section in README.md
+# export PKG_CONFIG_PATH="/opt/homebrew/opt/mysql-client/lib/pkgconfig"
