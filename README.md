@@ -89,44 +89,11 @@ carparazzi/
 - Python 3.13+
 - Kotlin/Java 17+
 
-### 로컬 개발 환경 설정
-
-```bash
-# 저장소 클론
-git clone https://github.com/your-username/carparazzi.git
-cd carparazzi
-
-# 환경 변수 설정
-cp .env.example .env
-# .env 파일을 편집하여 필요한 값들을 설정
-
-# Docker Compose로 개발 환경 실행
-docker-compose up -d
-
-# 프론트엔드 개발 서버 실행
-cd web
-npm install
-npm run dev
-
-# 백엔드 개발 서버 실행
-cd server
-./gradlew bootRun
-```
-
-### Factory 프로젝트 실행
-
-```bash
-cd factory
-pip install -e .
-python projects/get_youtube_video/app.py
-```
-
 ## 📚 문서
 
-- [📋 PRD (제품 요구사항 문서)](./docs/prd/20250701_step1_detect_accident.md)
-- [🏗️ 아키텍처 설계](./docs/architecture.md) (예정)
-- [🔧 API 문서](./docs/api.md) (예정)
-- [🚀 배포 가이드](./docs/deployment.md) (예정)
+- Phase1
+  - [📋 PRD](./docs/PRD.20250701_step1_detect_accident.md)
+  - [📋 ERD](./docs/ERD.20250701_step1_detect_accident.md)
 
 ## 🎯 성능 목표
 
@@ -146,11 +113,6 @@ python projects/get_youtube_video/app.py
 ## 📄 라이선스
 
 이 프로젝트는 MIT 라이선스 하에 배포됩니다. 자세한 내용은 [LICENSE](LICENSE) 파일을 참조하세요.
-
-## 👥 팀
-
-- **Backend & AI**: [Your Name]
-- **DevOps & Infrastructure**: [Your Name]
 
 ## 📞 문의
 
