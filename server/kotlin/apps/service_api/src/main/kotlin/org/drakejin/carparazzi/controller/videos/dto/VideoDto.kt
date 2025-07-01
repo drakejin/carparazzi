@@ -1,7 +1,7 @@
 package org.drakejin.carparazzi.controller.videos.dto
 
 import org.drakejin.carparazzi.controller.common.dto.PaginationInfo
-import java.time.Instant
+import java.time.OffsetDateTime
 import java.util.*
 
 // Response DTOs
@@ -11,7 +11,7 @@ data class VideoUploadResponseDto(
     val fileSizeBytes: Long,
     val fileFormat: String,
     val uploadStatus: UploadStatus,
-    val uploadedAt: Instant,
+    val uploadedAt: OffsetDateTime,
     val s3Key: String
 )
 
@@ -22,8 +22,8 @@ data class VideoInfoResponseDto(
     val durationSeconds: Int?,
     val fileFormat: String,
     val uploadStatus: UploadStatus,
-    val uploadedAt: Instant,
-    val completedAt: Instant?,
+    val uploadedAt: OffsetDateTime,
+    val completedAt: OffsetDateTime?,
     val analysisStatus: String?
 )
 

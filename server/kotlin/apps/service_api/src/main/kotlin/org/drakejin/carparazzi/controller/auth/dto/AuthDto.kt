@@ -1,6 +1,6 @@
 package org.drakejin.carparazzi.controller.auth.dto
 
-import java.time.Instant
+import java.time.OffsetDateTime
 import java.util.*
 
 // Response DTOs
@@ -9,8 +9,8 @@ data class UserInfoResponseDto(
     val email: String,
     val nickname: String,
     val status: UserStatus,
-    val createdAt: Instant,
-    val lastLoginAt: Instant?
+    val createdAt: OffsetDateTime,
+    val lastLoginAt: OffsetDateTime?
 )
 
 enum class UserStatus {

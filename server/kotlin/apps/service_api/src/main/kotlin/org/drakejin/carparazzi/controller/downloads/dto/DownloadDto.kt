@@ -2,20 +2,20 @@ package org.drakejin.carparazzi.controller.downloads.dto
 
 import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
 import org.drakejin.carparazzi.controller.common.dto.PaginationInfo
-import java.time.Instant
+import java.time.OffsetDateTime
 import java.util.*
 
 // Response DTOs
 data class DownloadUrlResponseDto(
     val downloadUrl: String,
-    val expiresAt: Instant,
+    val expiresAt: OffsetDateTime,
     val fileSizeBytes: Long,
     val filename: String
 )
 
 data class AnalysisZipDownloadResponseDto(
     val downloadUrl: String,
-    val expiresAt: Instant,
+    val expiresAt: OffsetDateTime,
     val fileSizeBytes: Long,
     val filename: String,
     val includedClips: List<IncludedClipDto>
@@ -37,7 +37,7 @@ data class DownloadHistoryItemDto(
     val clipId: UUID?,
     val downloadType: DownloadType,
     val violationType: ViolationType?,
-    val downloadedAt: Instant
+    val downloadedAt: OffsetDateTime
 )
 
 // Enums

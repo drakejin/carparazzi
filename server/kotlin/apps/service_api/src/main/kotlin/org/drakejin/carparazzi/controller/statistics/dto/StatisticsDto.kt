@@ -1,7 +1,7 @@
 package org.drakejin.carparazzi.controller.statistics.dto
 
 import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
-import java.time.Instant
+import java.time.OffsetDateTime
 import java.time.LocalDate
 
 // Response DTOs
@@ -12,8 +12,8 @@ data class UserStatisticsResponseDto(
     val totalClipsGenerated: Int,
     val totalDownloads: Int,
     val violationTypeBreakdown: Map<ViolationType, Int>,
-    val lastUploadAt: Instant?,
-    val accountCreatedAt: Instant
+    val lastUploadAt: OffsetDateTime?,
+    val accountCreatedAt: OffsetDateTime
 )
 
 data class SystemStatisticsResponseDto(

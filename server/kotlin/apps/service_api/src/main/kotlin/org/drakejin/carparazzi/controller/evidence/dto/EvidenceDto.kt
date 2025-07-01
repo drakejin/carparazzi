@@ -1,7 +1,7 @@
 package org.drakejin.carparazzi.controller.evidence.dto
 
 import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
-import java.time.Instant
+import java.time.OffsetDateTime
 import java.util.*
 
 // Request DTOs
@@ -20,8 +20,8 @@ data class EvidenceClipResponseDto(
     val endTimeSeconds: Double,
     val durationSeconds: Double,
     val clipStatus: ClipStatus,
-    val createdAt: Instant,
-    val expiresAt: Instant
+    val createdAt: OffsetDateTime,
+    val expiresAt: OffsetDateTime
 )
 
 data class EvidenceClipDetailResponseDto(
@@ -36,8 +36,8 @@ data class EvidenceClipDetailResponseDto(
     val fileSizeBytes: Long,
     val clipStatus: ClipStatus,
     val s3Key: String?,
-    val createdAt: Instant,
-    val expiresAt: Instant
+    val createdAt: OffsetDateTime,
+    val expiresAt: OffsetDateTime
 )
 
 data class EvidenceClipListResponseDto(

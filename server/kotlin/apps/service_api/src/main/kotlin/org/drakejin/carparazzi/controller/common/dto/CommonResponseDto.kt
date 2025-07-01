@@ -1,12 +1,12 @@
 package org.drakejin.carparazzi.controller.common.dto
 
-import java.time.Instant
+import java.time.OffsetDateTime
 
 data class ApiResponse<T>(
     val success: Boolean,
     val data: T? = null,
     val error: ErrorDetail? = null,
-    val timestamp: Instant = Instant.now()
+    val timestamp: OffsetDateTime = OffsetDateTime.now()
 )
 
 data class ErrorDetail(

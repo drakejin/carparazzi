@@ -1,7 +1,7 @@
 package org.drakejin.carparazzi.controller.analysis.dto
 
 import org.drakejin.carparazzi.controller.common.dto.PaginationInfo
-import java.time.Instant
+import java.time.OffsetDateTime
 import java.util.*
 
 // Request DTOs
@@ -14,8 +14,8 @@ data class AnalysisJobResponseDto(
     val jobId: UUID,
     val uploadId: UUID,
     val jobStatus: JobStatus,
-    val startedAt: Instant,
-    val estimatedCompletionTime: Instant?
+    val startedAt: OffsetDateTime,
+    val estimatedCompletionTime: OffsetDateTime?
 )
 
 data class AnalysisStatusResponseDto(
@@ -23,8 +23,8 @@ data class AnalysisStatusResponseDto(
     val jobStatus: JobStatus,
     val progressPercentage: Int,
     val currentStage: String,
-    val startedAt: Instant,
-    val estimatedCompletionTime: Instant?,
+    val startedAt: OffsetDateTime,
+    val estimatedCompletionTime: OffsetDateTime?,
     val processingMetadata: ProcessingMetadata?
 )
 
@@ -37,8 +37,8 @@ data class ProcessingMetadata(
 data class AnalysisResultResponseDto(
     val jobId: UUID,
     val jobStatus: JobStatus,
-    val startedAt: Instant,
-    val completedAt: Instant?,
+    val startedAt: OffsetDateTime,
+    val completedAt: OffsetDateTime?,
     val processingTimeMs: Long,
     val totalViolationsDetected: Int,
     val violations: List<ViolationSummaryDto>
@@ -51,7 +51,7 @@ data class ViolationSummaryDto(
     val confidenceScore: Double,
     val severityLevel: SeverityLevel,
     val description: String,
-    val detectedAt: Instant
+    val detectedAt: OffsetDateTime
 )
 
 data class AnalysisJobListResponseDto(
@@ -66,8 +66,8 @@ data class AnalysisJobSummaryDto(
     val jobStatus: JobStatus,
     val totalViolationsDetected: Int,
     val processingTimeMs: Long,
-    val startedAt: Instant,
-    val completedAt: Instant?
+    val startedAt: OffsetDateTime,
+    val completedAt: OffsetDateTime?
 )
 
 // Enums

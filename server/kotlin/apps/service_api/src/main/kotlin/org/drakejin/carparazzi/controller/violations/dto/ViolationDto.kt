@@ -2,7 +2,7 @@ package org.drakejin.carparazzi.controller.violations.dto
 
 import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
 import org.drakejin.carparazzi.controller.analysis.dto.SeverityLevel
-import java.time.Instant
+import java.time.OffsetDateTime
 import java.util.*
 
 // Response DTOs
@@ -19,7 +19,7 @@ data class ViolationDetailResponseDto(
     val severityLevel: SeverityLevel,
     val description: String,
     val detectionMetadata: DetectionMetadata?,
-    val detectedAt: Instant
+    val detectedAt: OffsetDateTime
 )
 
 data class DetectionMetadata(
