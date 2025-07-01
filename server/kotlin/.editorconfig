@@ -1,0 +1,31 @@
+# 프로젝트 루트 표시
+root = true
+
+# 모든 파일에 적용
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+# Kotlin/Java 파일
+[*.{kt,kts,java}]
+indent_style = space
+indent_size = 4
+max_line_length = 120
+
+# JSON/YAML 파일
+[*.{json,yml,yaml}]
+indent_size = 2
+
+# Markdown 파일
+[*.md]
+trim_trailing_whitespace = false
+
+# Gradle 파일
+[*.gradle.kts]
+indent_size = 4
+
+# XML 파일 (Android)
+[*.xml]
+indent_size = 4

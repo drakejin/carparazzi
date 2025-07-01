@@ -1,0 +1,348 @@
+# Kotlin Multi-Module Project Rules for Cursor
+
+## Project Overview
+This is a Kotlin multi-module Gradle project with a scalable architecture organized into the following structure:
+
+### Clean Code Principles
+
+#### SOLID Principles
+- **Single Responsibility Principle (SRP)**: Each class/function should have one reason to change
+  ```kotlin
+  // Bad: UserManager handles both user data and email sending
+  class UserManager {
+      fun saveUser(user: User) { /* save logic */ }
+      fun sendWelcomeEmail(user: User) { /* email logic */ }
+  }
+
+  // Good: Separate responsibilities
+  class UserRepository {
+      fun save(user: User) { /* save logic */ }
+  }
+
+  class EmailService {
+      fun sendWelcomeEmail(user: User) { /* email logic */ }
+  }
+  ```
+
+- **Open/Closed Principle (OCP)**: Open for extension, closed for modification
+  ```kotlin
+  // Good: Use sealed classes for extensibility
+  sealed class PaymentMethod {
+      abstract fun processPayment(amount: Double): PaymentResult
+  }
+
+  class CreditCardPayment : PaymentMethod() {
+      override fun processPayment(amount: Double) = /* implementation */
+  }
+
+  class PayPalPayment : PaymentMethod() {
+      override fun processPayment(amount: Double) = /* implementation */
+  }
+  ```
+
+- **Liskov Substitution Principle (LSP)**: Subtypes must be substitutable for their base types
+  ```kotlin
+  // Good: Rectangle and Square both behave correctly as Shape
+  abstract class Shape {
+      abstract fun area(): Double
+  }
+
+  class Rectangle(private val width: Double, private val height: Double) : Shape() {
+      override fun area() = width * height
+  }
+
+  class Square(private val side: Double) : Shape() {
+      override fun area() = side * side
+  }
+  ```
+
+- **Interface Segregation Principle (ISP)**: Clients shouldn't depend on interfaces they don't use
+  ```kotlin
+  // Bad: Fat interface
+  interface Worker {
+      fun work()
+      fun eat()
+      fun sleep()
+  }
+
+  // Good: Segregated interfaces
+  interface Workable {
+      fun work()
+  }
+
+  interface Eatable {
+      fun eat()
+  }
+
+  interface Sleepable {
+      fun sleep()
+  }
+  ```
+
+- **Dependency Inversion Principle (DIP)**: Depend on abstractions, not concretions
+  ```kotlin
+  // Good: Depend on abstraction
+  interface UserRepository {
+      fun findById(id: Long): User?
+  }
+
+  class UserService(private val userRepository: UserRepository) {
+      fun getUser(id: Long): User? = userRepository.findById(id)
+  }
+
+  class DatabaseUserRepository : UserRepository {
+      override fun findById(id: Long): User? = /* database implementation */
+  }
+  ```
+
+#### Other Clean Code Principles
+- **DRY (Don't Repeat Yourself)**: Avoid code duplication
+- **KISS (Keep It Simple, Stupid)**: Prefer simple solutions over complex ones
+- **YAGNI (You Aren't Gonna Need It)**: Don't implement features until they're needed
+- **Composition over Inheritance**: Favor object composition over class inheritance
+- **Fail Fast**: Detect and report errors as early as possible
+- **Meaningful Names**: Use intention-revealing names for variables, functions, and classes
+- **Small Functions**: Functions should be small and do one thing well
+- **Command Query Separation**: Functions should either do something or answer something, not both
+- **Avoid Deep Nesting**: Use early returns and guard clauses to reduce nesting levels
+- **Consistent Abstraction Level**: All statements in a function should be at the same level of abstraction
+
+### Architecture Patterns
+
+#### Clean Architecture Implementation
+- **Domain Layer**: Contains business logic, entities, and use cases
+  ```kotlin
+  // Domain entities
+  data class User(val id: Long, val email: String, val name: String)
+
+  // Use cases (business logic)
+  class CreateUserUseCase(private val userRepository: UserRepository) {
+      fun execute(userData: UserData): Result<User> {
+          // Business logic here
+      }
+  }
+  ```
+
+- **Data Layer**: Implements repositories and handles data sources
+  ```kotlin
+  // Repository implementation
+  class UserRepositoryImpl(
+      private val localDataSource: UserLocalDataSource,
+      private val remoteDataSource: UserRemoteDataSource
+  ) : UserRepository {
+      override fun save(user: User): Result<User> {
+          // Data access logic
+      }
+  }
+  ```
+
+- **Presentation Layer**: Handles UI and user interactions
+  ```kotlin
+  // Presentation logic
+  class UserController(private val createUserUseCase: CreateUserUseCase) {
+      fun createUser(request: CreateUserRequest): ResponseEntity<User> {
+          // Presentation logic
+      }
+  }
+  ```
+
+#### Dependency Injection Patterns
+- Use constructor injection for required dependencies
+- Use property injection sparingly for optional dependencies
+- Prefer interfaces over concrete classes in constructors
+- Use factory patterns for complex object creation
+
+#### Module Organization Following SOLID
+
+- **Single Responsibility**: Each module has one clear purpose
+  - `apps/*`: Pure business logic and entities
+  - entity/: 엔티티
+  - domains/: 도메인 레이어 (인터페이스 + 유스케이스)
+  - apps/service_api/: 애플리케이션 + 인프라 레이어
+
+
+- **Open/Closed**: Modules are extensible through interfaces
+  - Use interfaces in `shared/domain` for repository contracts
+  - Implement concrete classes in `shared/data` or feature modules
+  - Features expose interfaces that apps can consume
+
+- **Liskov Substitution**: Feature implementations are interchangeable
+  - Multiple payment providers can implement the same interface
+  - Different notification channels follow the same contract
+
+- **Interface Segregation**: Modules expose only what clients need
+  - Feature modules expose focused APIs
+  - Shared modules provide specific capabilities
+
+- **Dependency Inversion**: Higher-level modules don't depend on lower-level modules
+  - Apps depend on feature interfaces, not implementations
+  - Features depend on domain abstractions, not data implementations
+  - All modules depend on abstractions defined in `shared/domain`
+
+#### Repository Pattern Implementation
+```kotlin
+// Abstract repository (DIP)
+interface UserRepository {
+    suspend fun findById(id: Long): User?
+    suspend fun save(user: User): User
+    suspend fun delete(id: Long): Boolean
+}
+
+// Concrete implementation
+class DatabaseUserRepository(
+    private val database: Database
+) : UserRepository {
+    override suspend fun findById(id: Long): User? {
+        // Database-specific implementation
+    }
+}
+```
+
+### Testing Guidelines
+
+#### Unit Testing Standards
+- **Test Coverage**: Aim for 80%+ code coverage for business logic
+- **Test Naming**: Use descriptive names that explain what is being tested
+  - Format: `should_ExpectedBehavior_When_StateUnderTest`
+  - Example: `should_ReturnTrue_When_ValidEmailProvided`
+- **Test Structure**: Follow AAA pattern (Arrange, Act, Assert)
+- **One Assertion Per Test**: Each test should verify one specific behavior
+- **Test Independence**: Tests should not depend on each other
+- **Fast Tests**: Unit tests should run quickly (< 100ms per test)
+
+#### Test Organization
+```kotlin
+class UserServiceTest {
+
+    @Test
+    fun `should create user when valid data provided`() {
+        // Arrange
+        val userData = UserData("john@example.com", "John Doe")
+        val mockRepository = mockk<UserRepository>()
+        every { mockRepository.save(any()) } returns User(1, "john@example.com", "John Doe")
+
+        // Act
+        val result = userService.createUser(userData)
+
+        // Assert
+        assertThat(result.email).isEqualTo("john@example.com")
+        assertThat(result.name).isEqualTo("John Doe")
+    }
+}
+```
+
+#### Testing Best Practices
+- **Mock External Dependencies**: Use MockK for mocking in Kotlin
+- **Test Edge Cases**: Test boundary conditions, null values, empty collections
+- **Test Error Scenarios**: Verify proper exception handling
+- **Use Test Fixtures**: Create reusable test data builders
+- **Parameterized Tests**: Use `@ParameterizedTest` for testing multiple scenarios
+- **Integration Tests**: Write integration tests for critical workflows
+- **Test Data Builders**: Use builder pattern for complex test objects
+
+#### Test Categories
+- **Unit Tests**: Test individual components in isolation
+- **Integration Tests**: Test component interactions
+- **Contract Tests**: Test API contracts and interfaces
+- **Property-Based Tests**: Use Kotest property testing for edge cases
+
+#### Testing Tools and Libraries
+- **JUnit 5**: Primary testing framework
+- **MockK**: Mocking library for Kotlin
+- **AssertJ**: Fluent assertion library
+- **Kotest**: Kotlin-first testing framework (alternative to JUnit)
+- **Testcontainers**: Integration testing with real dependencies
+
+### Dependencies Management
+- Use version catalog (`gradle/libs.versions.toml`) for dependency management
+- Prefer Kotlin coroutines for asynchronous operations
+- Use kotlinx-serialization for JSON handling
+- Use kotlinx-datetime for date/time operations
+
+### Module Dependencies
+- `app` module depends on `utils` module
+- Avoid circular dependencies between modules
+- Keep module interfaces clean and minimal
+
+### Build Configuration
+- Use convention plugins from `buildSrc/` for consistent configuration
+- Apply code quality checks to all modules
+- Run `./gradlew codeQualityCheck` before committing
+- Use `./gradlew codeQualityFix` to auto-fix formatting issues
+
+### Git Workflow
+- Run code quality checks before committing
+- Fix all detekt issues before merging
+- Ensure all tests pass
+- Keep commits atomic and well-described
+
+### Performance Considerations
+- Use appropriate data structures for the use case
+- Avoid unnecessary object creation in loops
+- Use lazy initialization where appropriate
+- Consider using inline functions for small utility functions
+
+### Error Handling
+- Use sealed classes for representing different states
+- Avoid catching generic exceptions
+- Provide meaningful error messages
+- Use Result type for operations that can fail
+
+### Documentation
+- Document public APIs with KDoc
+- Include usage examples for complex functions
+- Keep README.md updated with project changes
+- Document architectural decisions
+
+
+## IDE Settings
+- Configure IDE to use project's .editorconfig
+- Enable Kotlin code style in IDE settings
+- Set up auto-import optimization
+- Configure IDE to show detekt warnings
+
+## Development Workflow
+
+When writing or modifying code, always:
+
+### Before Writing Code
+1. **Understand Requirements**: Clearly understand what needs to be implemented
+2. **Design First**: Think about the design and architecture before coding
+3. **Consider Testability**: Design code to be easily testable
+4. **Check Existing Patterns**: Follow established patterns in the codebase
+
+### While Writing Code
+1. **Write Tests First (TDD)**: Consider writing tests before implementation
+2. **Keep Functions Small**: Aim for functions that do one thing well
+3. **Use Meaningful Names**: Choose names that reveal intent
+4. **Avoid Premature Optimization**: Focus on clarity first, optimize later
+5. **Handle Errors Gracefully**: Use proper error handling patterns
+
+### After Writing Code
+1. **Run Tests**: Ensure all tests pass (`./gradlew test`)
+2. **Check Coverage**: Verify test coverage is adequate
+3. **Run Code Quality Checks**: Execute `./gradlew codeQualityCheck`
+4. **Fix Quality Issues**: Address any detekt or ktlint violations
+5. **Review Your Code**: Self-review before committing
+6. **Update Documentation**: Update relevant documentation
+7. **Consider Impact**: Assess impact on other modules
+
+### Code Review Checklist
+- [ ] Code follows clean code principles
+- [ ] Functions are small and focused
+- [ ] Names are meaningful and intention-revealing
+- [ ] No code duplication (DRY principle)
+- [ ] Proper error handling
+- [ ] Adequate test coverage
+- [ ] Tests are well-named and focused
+- [ ] No magic numbers or strings
+- [ ] Consistent with existing codebase patterns
+- [ ] Documentation updated if needed
+
+### Refactoring Guidelines
+- **Red-Green-Refactor**: Make tests pass, then improve code quality
+- **Small Steps**: Make small, incremental changes
+- **Keep Tests Green**: Ensure tests pass after each refactoring step
+- **Extract Methods**: Break down large functions into smaller ones
+- **Remove Duplication**: Eliminate repeated code
+- **Improve Names**: Rename variables/functions for better clarity
