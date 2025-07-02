@@ -5,34 +5,37 @@ import org.drakejin.carparazzi.controller.auth.dto.UserInfoResponseDto
 import org.drakejin.carparazzi.controller.common.dto.ApiResponse
 import org.drakejin.carparazzi.domain.usecase.UserUseCase
 import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
-import org.springframework.web.server.ResponseStatusException
-import reactor.core.publisher.Mono
 import java.util.*
 
 @RestController
 @RequestMapping("/api/v1/auth")
-class AuthController(
+open class AuthController(
     private val userUseCase: UserUseCase
 ) {
 
     @GetMapping("/me")
-    fun getCurrentUserInfo(
+    suspend fun getCurrentUserInfo(
         @RequestHeader("X-User-ID") userId: String
-    ): Mono<ApiResponse<UserInfoResponseDto>> {
-        return Mono.fromCallable {
+    ): ResponseEntity<ApiResponse<*>> {
+        val userUuid = try {
             UUID.fromString(userId)
+        } catch (e: IllegalArgumentException) {
+            val errorResponse = ApiResponse<Any>(
+                success = false,
+                data = null,
+                error = org.drakejin.carparazzi.controller.common.dto.ErrorDetail(
+                    code = "BAD_REQUEST",
+                    message = "Invalid user ID format"
+                )
+            )
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errorResponse)
         }
-        .onErrorMap { ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid user ID format") }
-        .flatMap { userUuid ->
-            Mono.fromCallable {
-                runBlocking { userUseCase.getUserInfo(userUuid) }
-            }
-        }
-        .switchIfEmpty(Mono.error(ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")))
-        .map { user ->
-            user ?: throw ResponseStatusException(HttpStatus.NOT_FOUND, "User not found")
 
+        val user = userUseCase.getUserInfo(userUuid)
+
+        return if (user != null) {
             val response = UserInfoResponseDto(
                 userId = user.userId,
                 email = user.email,
@@ -42,10 +45,21 @@ class AuthController(
                 lastLoginAt = user.lastLoginAt
             )
 
-            ApiResponse(
+            val successResponse = ApiResponse(
                 success = true,
                 data = response
             )
+            ResponseEntity.ok(successResponse)
+        } else {
+            val errorResponse = ApiResponse<Any>(
+                success = false,
+                data = null,
+                error = org.drakejin.carparazzi.controller.common.dto.ErrorDetail(
+                    code = "NOT_FOUND",
+                    message = "User not found"
+                )
+            )
+            ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse)
         }
     }
 }

@@ -26,7 +26,7 @@ public class DownloadLogs implements Serializable {
     private final String downloadType;
     private final OffsetDateTime downloadedAt;
     private final String userAgent;
-    private final Object ipAddress;
+    private final String ipAddress;
 
     public DownloadLogs(DownloadLogs value) {
         this.downloadId = value.downloadId;
@@ -45,7 +45,7 @@ public class DownloadLogs implements Serializable {
         String downloadType,
         OffsetDateTime downloadedAt,
         String userAgent,
-        Object ipAddress
+        String ipAddress
     ) {
         this.downloadId = downloadId;
         this.userId = userId;
@@ -101,15 +101,10 @@ public class DownloadLogs implements Serializable {
     }
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * Getter for <code>public.download_logs.ip_address</code>.
      */
-    @Deprecated
-    public Object getIpAddress() {
+    @Size(max = 45)
+    public String getIpAddress() {
         return this.ipAddress;
     }
 

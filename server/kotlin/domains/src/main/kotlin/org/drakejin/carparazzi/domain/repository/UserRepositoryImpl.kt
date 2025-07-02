@@ -10,7 +10,7 @@ import java.time.OffsetDateTime
 import java.util.*
 
 @Repository
-class UserRepositoryImpl(
+open class UserRepositoryImpl(
     private val dsl: DSLContext
 ) : UserRepository {
 

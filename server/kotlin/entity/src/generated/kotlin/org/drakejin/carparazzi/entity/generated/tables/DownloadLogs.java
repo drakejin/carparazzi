@@ -87,15 +87,9 @@ public class DownloadLogs extends TableImpl<DownloadLogsRecord> {
     public final TableField<DownloadLogsRecord, String> USER_AGENT = createField(DSL.name("user_agent"), SQLDataType.CLOB, this, "");
 
     /**
-     * @deprecated Unknown data type. If this is a qualified, user-defined type,
-     * it may have been excluded from code generation. If this is a built-in
-     * type, you can define an explicit {@link org.jooq.Binding} to specify how
-     * this type should be handled. Deprecation can be turned off using
-     * {@literal <deprecationOnUnknownTypes/>} in your code generator
-     * configuration.
+     * The column <code>public.download_logs.ip_address</code>.
      */
-    @Deprecated
-    public final TableField<DownloadLogsRecord, Object> IP_ADDRESS = createField(DSL.name("ip_address"), org.jooq.impl.DefaultDataType.getDefaultDataType("\"pg_catalog\".\"inet\""), this, "");
+    public final TableField<DownloadLogsRecord, String> IP_ADDRESS = createField(DSL.name("ip_address"), SQLDataType.VARCHAR(45), this, "");
 
     private DownloadLogs(Name alias, Table<DownloadLogsRecord> aliased) {
         this(alias, aliased, null);
@@ -225,14 +219,14 @@ public class DownloadLogs extends TableImpl<DownloadLogsRecord> {
     // -------------------------------------------------------------------------
 
     @Override
-    public Row7<UUID, UUID, UUID, String, OffsetDateTime, String, Object> fieldsRow() {
+    public Row7<UUID, UUID, UUID, String, OffsetDateTime, String, String> fieldsRow() {
         return (Row7) super.fieldsRow();
     }
 
     /**
      * Convenience mapping calling {@link SelectField#convertFrom(Function)}.
      */
-    public <U> SelectField<U> mapping(Function7<? super UUID, ? super UUID, ? super UUID, ? super String, ? super OffsetDateTime, ? super String, ? super Object, ? extends U> from) {
+    public <U> SelectField<U> mapping(Function7<? super UUID, ? super UUID, ? super UUID, ? super String, ? super OffsetDateTime, ? super String, ? super String, ? extends U> from) {
         return convertFrom(Records.mapping(from));
     }
 
@@ -240,7 +234,7 @@ public class DownloadLogs extends TableImpl<DownloadLogsRecord> {
      * Convenience mapping calling {@link SelectField#convertFrom(Class,
      * Function)}.
      */
-    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super UUID, ? super UUID, ? super UUID, ? super String, ? super OffsetDateTime, ? super String, ? super Object, ? extends U> from) {
+    public <U> SelectField<U> mapping(Class<U> toType, Function7<? super UUID, ? super UUID, ? super UUID, ? super String, ? super OffsetDateTime, ? super String, ? super String, ? extends U> from) {
         return convertFrom(toType, Records.mapping(from));
     }
 }

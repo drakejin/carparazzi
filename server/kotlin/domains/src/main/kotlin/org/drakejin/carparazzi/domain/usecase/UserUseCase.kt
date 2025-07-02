@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class UserUseCase(
+open class UserUseCase(
     private val userRepository: UserRepository
 ) {
     suspend fun getUserInfo(userId: UUID): UserDto? {

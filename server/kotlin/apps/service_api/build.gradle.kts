@@ -12,12 +12,6 @@ java {
     }
 }
 
-kotlin {
-    compilerOptions {
-        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
-        freeCompilerArgs.addAll("-Xjsr305=strict")
-    }
-}
 
 dependencies {
     // 내부 모듈 의존성
