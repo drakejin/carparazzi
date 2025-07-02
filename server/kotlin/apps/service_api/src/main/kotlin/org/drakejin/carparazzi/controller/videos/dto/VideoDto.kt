@@ -1,6 +1,7 @@
 package org.drakejin.carparazzi.controller.videos.dto
 
 import org.drakejin.carparazzi.controller.common.dto.PaginationInfo
+import org.drakejin.carparazzi.domain.dto.VideoUploadDto.UploadStatus
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -31,8 +32,3 @@ data class VideoListResponseDto(
     val videos: List<VideoInfoResponseDto>,
     val pagination: PaginationInfo
 )
-
-// Enums
-enum class UploadStatus {
-    UPLOADING, COMPLETED, FAILED
-}

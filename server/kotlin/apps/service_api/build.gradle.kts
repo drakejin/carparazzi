@@ -6,6 +6,19 @@ plugins {
     id("com.epages.restdocs-api-spec") version "0.19.4"
 }
 
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+kotlin {
+    compilerOptions {
+        jvmTarget = org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_21
+        freeCompilerArgs.addAll("-Xjsr305=strict")
+    }
+}
+
 dependencies {
     // 내부 모듈 의존성
     implementation(project(":domains"))
@@ -17,8 +30,12 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-webflux")
     implementation("org.jetbrains.kotlin:kotlin-reflect")
 
-    // Swagger UI
-    implementation("org.springdoc:springdoc-openapi-starter-webmvc-ui:2.3.0")
+    // Coroutines 의존성
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-reactor")
+
+    // Swagger UI for WebFlux
+    implementation("org.springdoc:springdoc-openapi-starter-webflux-ui:2.3.0")
 
     // 개발 도구
     developmentOnly("org.springframework.boot:spring-boot-devtools")
@@ -35,6 +52,8 @@ dependencies {
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit5")
     testImplementation("org.springframework.restdocs:spring-restdocs-mockmvc")
     testImplementation("com.epages:restdocs-api-spec-mockmvc:0.19.4")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("com.ninja-squad:springmockk:4.0.2")
     testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 }
 

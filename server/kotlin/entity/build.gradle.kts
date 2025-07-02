@@ -25,6 +25,9 @@ dependencies {
     implementation("org.jooq:jooq-meta:3.18.7")
     implementation("org.jooq:jooq-codegen:3.18.7")
 
+    // Jakarta Bean Validation API
+    implementation("jakarta.validation:jakarta.validation-api:3.0.2")
+
     // PostgreSQL 드라이버 (jOOQ 코드 생성용)
     jooqGenerator("org.postgresql:postgresql:42.7.1")
 

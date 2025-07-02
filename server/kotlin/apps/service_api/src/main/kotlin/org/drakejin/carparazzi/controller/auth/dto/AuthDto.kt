@@ -1,5 +1,6 @@
 package org.drakejin.carparazzi.controller.auth.dto
 
+import org.drakejin.carparazzi.domain.dto.UserDto.UserStatus
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -12,7 +13,3 @@ data class UserInfoResponseDto(
     val createdAt: OffsetDateTime,
     val lastLoginAt: OffsetDateTime?
 )
-
-enum class UserStatus {
-    ACTIVE, INACTIVE, SUSPENDED
-}

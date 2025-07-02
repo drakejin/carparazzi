@@ -1,6 +1,7 @@
 package org.drakejin.carparazzi.controller.downloads.dto
 
-import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
+import org.drakejin.carparazzi.domain.dto.ViolationEventDto.ViolationType
+import org.drakejin.carparazzi.domain.dto.DownloadLogDto.DownloadType
 import org.drakejin.carparazzi.controller.common.dto.PaginationInfo
 import java.time.OffsetDateTime
 import java.util.*
@@ -39,8 +40,3 @@ data class DownloadHistoryItemDto(
     val violationType: ViolationType?,
     val downloadedAt: OffsetDateTime
 )
-
-// Enums
-enum class DownloadType {
-    SINGLE, BATCH, ZIP
-}

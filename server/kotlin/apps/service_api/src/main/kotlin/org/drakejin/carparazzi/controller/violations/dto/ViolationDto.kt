@@ -1,7 +1,7 @@
 package org.drakejin.carparazzi.controller.violations.dto
 
-import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
-import org.drakejin.carparazzi.controller.analysis.dto.SeverityLevel
+import org.drakejin.carparazzi.domain.dto.ViolationEventDto.ViolationType
+import org.drakejin.carparazzi.domain.dto.ViolationEventDto.SeverityLevel
 import java.time.OffsetDateTime
 import java.util.*
 

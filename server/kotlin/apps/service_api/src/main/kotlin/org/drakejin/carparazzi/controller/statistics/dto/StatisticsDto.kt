@@ -1,6 +1,6 @@
 package org.drakejin.carparazzi.controller.statistics.dto
 
-import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
+import org.drakejin.carparazzi.domain.dto.ViolationEventDto.ViolationType
 import java.time.OffsetDateTime
 import java.time.LocalDate
 

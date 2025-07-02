@@ -1,6 +1,9 @@
 package org.drakejin.carparazzi.controller.analysis.dto
 
 import org.drakejin.carparazzi.controller.common.dto.PaginationInfo
+import org.drakejin.carparazzi.domain.dto.AnalysisJobDto.JobStatus
+import org.drakejin.carparazzi.domain.dto.ViolationEventDto.ViolationType
+import org.drakejin.carparazzi.domain.dto.ViolationEventDto.SeverityLevel
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -69,23 +72,3 @@ data class AnalysisJobSummaryDto(
     val startedAt: OffsetDateTime,
     val completedAt: OffsetDateTime?
 )
-
-// Enums
-enum class JobStatus {
-    QUEUED, PROCESSING, COMPLETED, FAILED
-}
-
-enum class ViolationType {
-    SIGNAL_VIOLATION,
-    LANE_VIOLATION,
-    COLLISION,
-    SUDDEN_BRAKING,
-    SUDDEN_ACCELERATION,
-    SPEEDING,
-    ILLEGAL_TURN,
-    ROAD_RAGE
-}
-
-enum class SeverityLevel {
-    LOW, MEDIUM, HIGH, CRITICAL
-}

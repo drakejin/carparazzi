@@ -1,6 +1,7 @@
 package org.drakejin.carparazzi.controller.evidence.dto
 
-import org.drakejin.carparazzi.controller.analysis.dto.ViolationType
+import org.drakejin.carparazzi.domain.dto.ViolationEventDto.ViolationType
+import org.drakejin.carparazzi.domain.dto.EvidenceClipDto.ClipStatus
 import java.time.OffsetDateTime
 import java.util.*
 
@@ -43,8 +44,3 @@ data class EvidenceClipDetailResponseDto(
 data class EvidenceClipListResponseDto(
     val clips: List<EvidenceClipDetailResponseDto>
 )
-
-// Enums
-enum class ClipStatus {
-    PROCESSING, READY, FAILED, EXPIRED
-}
